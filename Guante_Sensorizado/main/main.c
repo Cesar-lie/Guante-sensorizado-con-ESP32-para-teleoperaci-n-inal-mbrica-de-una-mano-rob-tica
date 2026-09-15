@@ -40,7 +40,7 @@ static const gpio_num_t unused_gpio[] = {GPIO_NUM_12,
                                          GPIO_NUM_33};
 
 #define UNUSED_GPIO_COUNT (sizeof(unused_gpio) / sizeof(unused_gpio[0]))
-static uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x78, 0x42, 0x1C, 0x68, 0x3E, 0xE0}; // MAC de la mano robotica
+static uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // MAC de la mano robotica
 const static char *tag = "main";
 adc_oneshot_unit_handle_t adc_handle;
 
@@ -83,14 +83,7 @@ void recv_cb(const esp_now_recv_info_t *esp_now_info, const uint8_t *data, int d
 
 void send_cb(const esp_now_send_info_t *tx_info, esp_now_send_status_t status)
 {
-    /*if (status == ESP_NOW_SEND_SUCCESS)
-    {
-        ESP_LOGI(tag, "Enviado: %d", status);
-    }
-    else
-    {
-        ESP_LOGI(tag, "Error en el envio: %d", status);
-    }*/
+    
 }
 
 void app_main(void)
@@ -105,13 +98,12 @@ void app_main(void)
 
     vTaskDelay(pdMS_TO_TICKS(50));
 
-    // int16_t ax, ay, az;
+    
     gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
     pack.led = 1;
 
     while (1)
     {
-        // grados_mpu_y = ang_y(ax, ay, az);
         for (size_t i = PULGAR; i <= MENIQUE; i++)
         {
             adc_oneshot_read(adc_handle, adc_channels[i], &pack.dedo[i]);
@@ -121,8 +113,6 @@ void app_main(void)
         esp_now_send(peer_mac, (uint8_t *)&pack, sizeof(pack));
         gpio_set_level(GPIO_NUM_2, !pack.led);
         esp_now_send(peer_mac, (uint8_t *)&pack, sizeof(pack));
-
-        // ESP_LOGI(tag, "grados del mpu: %u", grados_mpu_y);
 
         vTaskDelay(pdMS_TO_TICKS(100));
     }
