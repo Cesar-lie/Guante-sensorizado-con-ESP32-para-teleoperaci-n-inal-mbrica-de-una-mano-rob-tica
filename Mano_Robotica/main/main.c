@@ -47,7 +47,7 @@ const servo_t servo_config[SERVO_NUM] = {
     {.gpio = GPIO_NUM_25, .channel = LEDC_CHANNEL_4},
     {.gpio = GPIO_NUM_33, .channel = LEDC_CHANNEL_5},
 };
-// GPIO que no se usaran y se mantendran en un nivel bajo
+// GPIO sin usaran y se mantendran en un nivel bajo
 static const gpio_num_t unused_gpio[] = {GPIO_NUM_32,
                                          GPIO_NUM_13,
                                          GPIO_NUM_23,
